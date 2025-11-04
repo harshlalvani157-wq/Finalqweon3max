@@ -1,0 +1,1604 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Flipkart - Android App Clone</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --primary: #2874f0;
+            --primary-dark: #1a5cbf;
+            --secondary: #ff6f00;
+            --light-bg: #f1f3f6;
+            --white: #ffffff;
+            --text-dark: #212121;
+            --text-light: #878787;
+            --border: #e0e0e0;
+            --success: #388e3c;
+            --footer-height: 60px;
+            --header-height: 56px;
+        }
+
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-dark);
+            min-height: 100vh;
+            position: relative;
+            padding-bottom: var(--footer-height);
+            overflow-x: hidden;
+        }
+
+        /* Page container */
+        .page {
+            display: none;
+            min-height: 100vh;
+            padding-bottom: var(--footer-height);
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Header */
+        header {
+            position: sticky;
+            top: 0;
+            background: linear-gradient(to right, var(--primary), #1a5cbf);
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
+            padding: 0 16px;
+            z-index: 100;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--white);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span {
+            color: var(--secondary);
+        }
+
+        .search-container {
+            flex: 1;
+            margin: 0 16px;
+            position: relative;
+        }
+
+        .search-bar {
+            width: 100%;
+            height: 36px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            padding: 0 12px;
+            color: var(--white);
+            font-size: 14px;
+        }
+
+        .search-bar i {
+            margin-right: 8px;
+            opacity: 0.8;
+        }
+
+        .header-icons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .icon-btn {
+            color: var(--white);
+            font-size: 20px;
+            position: relative;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -6px;
+            right: -6px;
+            background-color: var(--secondary);
+            color: var(--white);
+            font-size: 10px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Categories Bar */
+        .categories-bar {
+            display: flex;
+            overflow-x: auto;
+            background-color: var(--white);
+            padding: 12px 16px;
+            gap: 16px;
+            scrollbar-width: none;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .categories-bar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 60px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .category-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 4px;
+            color: var(--primary);
+            font-size: 20px;
+        }
+
+        /* Banner */
+        .banner {
+            width: 100%;
+            height: 140px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            margin: 12px 0;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: bold;
+            font-size: 18px;
+            text-align: center;
+            padding: 0 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        /* Deals Section */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 16px;
+            margin: 16px 0 8px;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .view-all {
+            color: var(--primary);
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        /* Vertical Product Grid */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            padding: 0 16px 16px;
+        }
+
+        .product-card {
+            background-color: var(--white);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+        }
+
+        .product-img {
+            height: 160px;
+            background: linear-gradient(45deg, #f5f7fa, #e4e7f0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .product-info {
+            padding: 12px;
+        }
+
+        .product-title {
+            font-size: 14px;
+            margin-bottom: 8px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            line-height: 1.3;
+        }
+
+        .product-price-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .product-price {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--success);
+        }
+
+        .product-original {
+            font-size: 12px;
+            color: var(--text-light);
+            text-decoration: line-through;
+            margin-left: 6px;
+        }
+
+        .product-discount {
+            background-color: #e6f4ea;
+            color: var(--success);
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+
+        /* Category Page */
+        .category-header {
+            background: var(--white);
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .category-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .category-description {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        /* Product Detail Page */
+        .product-detail {
+            background-color: var(--white);
+            padding: 16px;
+        }
+
+        .product-images {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .product-images::-webkit-scrollbar {
+            display: none;
+        }
+
+        .product-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            background: linear-gradient(45deg, #f5f7fa, #e4e7f0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            font-size: 12px;
+        }
+
+        .main-image {
+            width: 100%;
+            height: 300px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 16px;
+        }
+
+        .product-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .product-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .rating-stars {
+            color: #ffc107;
+            margin-right: 8px;
+        }
+
+        .rating-count {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--success);
+            margin-bottom: 12px;
+        }
+
+        .product-original {
+            font-size: 16px;
+            color: var(--text-light);
+            text-decoration: line-through;
+            margin-left: 8px;
+        }
+
+        .product-discount {
+            background-color: #e6f4ea;
+            color: var(--success);
+            font-size: 14px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+        }
+
+        .product-description {
+            margin: 16px 0;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .specifications {
+            margin: 16px 0;
+        }
+
+        .spec-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .spec-list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+
+        .spec-item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            padding: 8px 0;
+        }
+
+        .spec-label {
+            color: var(--text-light);
+        }
+
+        .spec-value {
+            font-weight: 500;
+        }
+
+        /* Cart Page */
+        .cart-items {
+            padding: 16px;
+        }
+
+        .cart-item {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            gap: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .cart-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: bold;
+        }
+
+        .cart-details {
+            flex: 1;
+        }
+
+        .cart-title {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .cart-price {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--success);
+            margin-bottom: 12px;
+        }
+
+        .cart-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            background: var(--white);
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .quantity-value {
+            width: 40px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .remove-btn {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .cart-summary {
+            background-color: var(--white);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .total-row {
+            font-weight: bold;
+            font-size: 18px;
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+
+        .checkout-btn {
+            background-color: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 4px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 500;
+            width: calc(100% - 32px);
+            margin: 16px;
+            cursor: pointer;
+        }
+
+        /* Account Page */
+        .account-page {
+            padding: 16px;
+        }
+
+        .profile-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 24px;
+            text-align: center;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            margin: 0 auto 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 32px;
+        }
+
+        .profile-name {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .profile-email {
+            color: var(--text-light);
+            margin-bottom: 16px;
+        }
+
+        .account-options {
+            background: var(--white);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .option-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid var(--border);
+            cursor: pointer;
+        }
+
+        .option-item:last-child {
+            border-bottom: none;
+        }
+
+        .option-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f5f5f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            color: var(--primary);
+        }
+
+        .option-text {
+            flex: 1;
+            font-size: 16px;
+        }
+
+        .option-arrow {
+            color: var(--text-light);
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--white);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: var(--footer-height);
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 10px;
+            color: var(--text-light);
+            text-decoration: none;
+            padding: 4px 0;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            margin-bottom: 2px;
+        }
+
+        /* Status bar for mobile */
+        .status-bar {
+            height: 20px;
+            background: linear-gradient(to right, var(--primary), #1a5cbf);
+        }
+
+        /* Back button */
+        .back-btn {
+            color: var(--white);
+            font-size: 20px;
+            margin-right: 16px;
+        }
+
+        /* Page titles */
+        .page-title {
+            color: var(--white);
+            font-size: 18px;
+            font-weight: 500;
+            flex: 1;
+            text-align: center;
+        }
+
+        /* Product placeholder colors */
+        .product-1 { background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%); }
+        .product-2 { background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); }
+        .product-3 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+        .product-4 { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); }
+        .product-5 { background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%); }
+        .product-6 { background: linear-gradient(135deg, #a6c0fe 0%, #f68084 100%); }
+        .product-7 { background: linear-gradient(135deg, #fad0c4 0%, #ff9a9e 100%); }
+        .product-8 { background: linear-gradient(135deg, #c2e9fb 0%, #a1c4fd 100%); }
+        .product-9 { background: linear-gradient(135deg, #fcb69f 0%, #ffecd2 100%); }
+        .product-10 { background: linear-gradient(135deg, #8fd3f4 0%, #84fab0 100%); }
+        .product-11 { background: linear-gradient(135deg, #96e6a1 0%, #d4fc79 100%); }
+        .product-12 { background: linear-gradient(135deg, #f68084 0%, #a6c0fe 100%); }
+
+        /* Category Icons */
+        .cat-mobile { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); color: white; }
+        .cat-fashion { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); }
+        .cat-electronics { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .cat-home { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .cat-beauty { background: linear-gradient(135deg, #a8ff78 0%, #78ffd6 100%); }
+        .cat-grocery { background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); }
+        .cat-toys { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
+        .cat-more { background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%); }
+
+        /* Category Page Colors */
+        .mobile-category { background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); }
+        .fashion-category { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); }
+        .electronics-category { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .home-category { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .beauty-category { background: linear-gradient(135deg, #a8ff78 0%, #78ffd6 100%); }
+        .grocery-category { background: linear-gradient(135deg, #d299c2 0%, #fef9d7 100%); }
+        .toys-category { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
+
+        @media (min-width: 768px) {
+            body {
+                max-width: 500px;
+                margin: 0 auto;
+                box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Fake status bar for mobile view -->
+    <div class="status-bar"></div>
+    
+    <!-- Home Page -->
+    <div id="home-page" class="page active">
+        <!-- Header -->
+        <header>
+            <div class="logo-container">
+                <a href="#" class="logo">Flip<span>kart</span></a>
+            </div>
+            
+            <div class="search-container">
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <span>Search for products, brands...</span>
+                </div>
+            </div>
+            
+            <div class="header-icons">
+                <a href="#" class="icon-btn" id="notifications-btn">
+                    <i class="fas fa-bell"></i>
+                </a>
+                <a href="#" class="icon-btn" id="cart-btn">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span class="cart-count">3</span>
+                </a>
+            </div>
+        </header>
+        
+        <!-- Categories Bar -->
+        <div class="categories-bar">
+            <div class="category-item" data-category="mobiles">
+                <div class="category-icon cat-mobile">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <span>Mobiles</span>
+            </div>
+            <div class="category-item" data-category="fashion">
+                <div class="category-icon cat-fashion">
+                    <i class="fas fa-tshirt"></i>
+                </div>
+                <span>Fashion</span>
+            </div>
+            <div class="category-item" data-category="electronics">
+                <div class="category-icon cat-electronics">
+                    <i class="fas fa-headphones"></i>
+                </div>
+                <span>Electronics</span>
+            </div>
+            <div class="category-item" data-category="home">
+                <div class="category-icon cat-home">
+                    <i class="fas fa-home"></i>
+                </div>
+                <span>Home</span>
+            </div>
+            <div class="category-item" data-category="beauty">
+                <div class="category-icon cat-beauty">
+                    <i class="fas fa-spa"></i>
+                </div>
+                <span>Beauty</span>
+            </div>
+            <div class="category-item" data-category="grocery">
+                <div class="category-icon cat-grocery">
+                    <i class="fas fa-shopping-basket"></i>
+                </div>
+                <span>Grocery</span>
+            </div>
+            <div class="category-item" data-category="toys">
+                <div class="category-icon cat-toys">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <span>Toys</span>
+            </div>
+            <div class="category-item" data-category="more" id="more-category">
+                <div class="category-icon cat-more">
+                    <i class="fas fa-ellipsis-h"></i>
+                </div>
+                <span>More</span>
+            </div>
+        </div>
+        
+        <!-- Banner -->
+        <div class="banner">
+            Big Billion Days Sale - Up to 80% Off
+        </div>
+        
+        <!-- Products Grid -->
+        <div class="section-header">
+            <h2 class="section-title">Top Deals</h2>
+            <a href="#" class="view-all">VIEW ALL</a>
+        </div>
+        
+        <div class="products-grid">
+            <!-- Product 1 -->
+            <div class="product-card" data-product="1">
+                <div class="product-img product-1">
+                    <div>Realme C55</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Realme C55 (Sunshine Gold, 64 GB)</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹9,999</span>
+                        <span class="product-original">₹14,999</span>
+                        <span class="product-discount">33% off</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 2 -->
+            <div class="product-card" data-product="2">
+                <div class="product-img product-2">
+                    <div>boAt Airdopes</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">boAt Airdopes 141 Bluetooth TWS</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹999</span>
+                        <span class="product-original">₹2,990</span>
+                        <span class="product-discount">67% off</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 3 -->
+            <div class="product-card" data-product="3">
+                <div class="product-img product-3">
+                    <div>OnePlus Nord</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">OnePlus Nord CE 3 Lite 5G</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹19,999</span>
+                        <span class="product-original">₹23,999</span>
+                        <span class="product-discount">17% off</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 4 -->
+            <div class="product-card" data-product="4">
+                <div class="product-img product-4">
+                    <div>Samsung Galaxy</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Samsung Galaxy M14 5G (ICY Silver)</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹10,499</span>
+                        <span class="product-original">₹15,990</span>
+                        <span class="product-discount">34% off</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 5 -->
+            <div class="product-card" data-product="5">
+                <div class="product-img product-5">
+                    <div>iPhone 14</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Apple iPhone 14 (128 GB) - Blue</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹65,999</span>
+                        <span class="product-original">₹79,900</span>
+                        <span class="product-discount">17% off</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 6 -->
+            <div class="product-card" data-product="6">
+                <div class="product-img product-6">
+                    <div>MacBook Air</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Apple MacBook Air M2 Chip (2023)</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹89,990</span>
+                        <span class="product-original">₹1,04,900</span>
+                        <span class="product-discount">14% off</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 7 -->
+            <div class="product-card" data-product="7">
+                <div class="product-img product-7">
+                    <div>Puma Shoes</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Puma Unisex Running Shoes</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹1,299</span>
+                        <span class="product-original">₹2,499</span>
+                        <span class="product-discount">48% off</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Product 8 -->
+            <div class="product-card" data-product="8">
+                <div class="product-img product-8">
+                    <div>Noise Watch</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Noise ColorFit Pro 4 Smartwatch</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹1,799</span>
+                        <span class="product-original">₹4,499</span>
+                        <span class="product-discount">60% off</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile Category Page -->
+    <div id="mobiles-page" class="page">
+        <header>
+            <div class="back-btn" id="mobiles-back">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <div class="page-title">Mobiles</div>
+            <div class="header-icons">
+                <a href="#" class="icon-btn">
+                    <i class="fas fa-filter"></i>
+                </a>
+            </div>
+        </header>
+        
+        <div class="category-header mobile-category">
+            <h1 class="category-title">Mobile Phones</h1>
+            <p class="category-description">Latest smartphones with great offers</p>
+        </div>
+        
+        <div class="products-grid">
+            <!-- Mobile Product 1 -->
+            <div class="product-card" data-product="1">
+                <div class="product-img product-1">
+                    <div>Realme C55</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Realme C55 (Sunshine Gold, 64 GB)</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹9,999</span>
+                        <span class="product-original">₹14,999</span>
+                        <span class="product-discount">33% off</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Product 2 -->
+            <div class="product-card" data-product="4">
+                <div class="product-img product-4">
+                    <div>Samsung Galaxy</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Samsung Galaxy M14 5G (ICY Silver)</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹10,499</span>
+                        <span class="product-original">₹15,990</span>
+                        <span class="product-discount">34% off</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Product 3 -->
+            <div class="product-card" data-product="5">
+                <div class="product-img product-5">
+                    <div>iPhone 14</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Apple iPhone 14 (128 GB) - Blue</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹65,999</span>
+                        <span class="product-original">₹79,900</span>
+                        <span class="product-discount">17% off</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mobile Product 4 -->
+            <div class="product-card" data-product="9">
+                <div class="product-img product-9">
+                    <div>Redmi Note</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Redmi Note 12 (Midnight Black)</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹14,999</span>
+                        <span class="product-original">₹17,999</span>
+                        <span class="product-discount">17% off</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Fashion Category Page -->
+    <div id="fashion-page" class="page">
+        <header>
+            <div class="back-btn" id="fashion-back">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <div class="page-title">Fashion</div>
+            <div class="header-icons">
+                <a href="#" class="icon-btn">
+                    <i class="fas fa-filter"></i>
+                </a>
+            </div>
+        </header>
+        
+        <div class="category-header fashion-category">
+            <h1 class="category-title">Fashion & Apparel</h1>
+            <p class="category-description">Clothing, footwear & accessories</p>
+        </div>
+        
+        <div class="products-grid">
+            <!-- Fashion Product 1 -->
+            <div class="product-card" data-product="7">
+                <div class="product-img product-7">
+                    <div>Puma Shoes</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Puma Unisex Running Shoes</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹1,299</span>
+                        <span class="product-original">₹2,499</span>
+                        <span class="product-discount">48% off</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fashion Product 2 -->
+            <div class="product-card" data-product="10">
+                <div class="product-img product-10">
+                    <div>Levi's Jeans</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Levi's Men's Slim Fit Jeans</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹1,899</span>
+                        <span class="product-original">₹2,599</span>
+                        <span class="product-discount">27% off</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fashion Product 3 -->
+            <div class="product-card" data-product="11">
+                <div class="product-img product-11">
+                    <div>Adidas T-Shirt</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Adidas Men's Solid T-Shirt</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹599</span>
+                        <span class="product-original">₹999</span>
+                        <span class="product-discount">40% off</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Fashion Product 4 -->
+            <div class="product-card" data-product="12">
+                <div class="product-img product-12">
+                    <div>Zara Dress</div>
+                </div>
+                <div class="product-info">
+                    <div class="product-title">Zara Women's Floral Dress</div>
+                    <div class="product-price-container">
+                        <span class="product-price">₹2,499</span>
+                        <span class="product-original">₹3,499</span>
+                        <span class="product-discount">29% off</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Product Detail Page -->
+    <div id="product-page" class="page">
+        <header>
+            <div class="back-btn" id="product-back">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <div class="page-title">Product Details</div>
+            <div class="header-icons">
+                <a href="#" class="icon-btn">
+                    <i class="fas fa-share-alt"></i>
+                </a>
+                <a href="#" class="icon-btn">
+                    <i class="far fa-heart"></i>
+                </a>
+            </div>
+        </header>
+        
+        <div class="product-detail">
+            <div class="main-image" id="product-main-image">
+                Realme C55
+            </div>
+            
+            <div class="product-images">
+                <div class="product-image product-1">Front</div>
+                <div class="product-image product-1">Back</div>
+                <div class="product-image product-1">Side</div>
+                <div class="product-image product-1">Box</div>
+            </div>
+            
+            <h1 class="product-title" id="product-title">Realme C55 (Sunshine Gold, 64 GB)</h1>
+            
+            <div class="product-rating">
+                <div class="rating-stars">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+                <div class="rating-count">4.2 (12,487 ratings)</div>
+            </div>
+            
+            <div class="product-price">
+                <span id="product-price">₹9,999</span>
+                <span class="product-original">₹14,999</span>
+                <span class="product-discount">33% off</span>
+            </div>
+            
+            <p class="product-description">
+                Realme C55 comes with a 50MP AI Camera with Super HDR that captures stunning details even in low light. 
+                Featuring a 6.72" FHD+ Display with 120Hz refresh rate for smooth scrolling and gaming.
+            </p>
+            
+            <div class="specifications">
+                <div class="spec-title">Key Specifications</div>
+                <div class="spec-list">
+                    <div class="spec-item">
+                        <div class="spec-label">Display</div>
+                        <div class="spec-value">6.72" FHD+ (120Hz)</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Processor</div>
+                        <div class="spec-value">MediaTek Helio G88</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">RAM</div>
+                        <div class="spec-value">4GB</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Storage</div>
+                        <div class="spec-value">64GB (Expandable)</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Battery</div>
+                        <div class="spec-value">5000mAh</div>
+                    </div>
+                    <div class="spec-item">
+                        <div class="spec-label">Camera</div>
+                        <div class="spec-value">50MP + 0.08MP</div>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="checkout-btn" id="add-to-cart-btn">ADD TO CART</button>
+        </div>
+    </div>
+    
+    <!-- Cart Page -->
+    <div id="cart-page" class="page">
+        <header>
+            <div class="back-btn" id="cart-back">
+                <i class="fas fa-arrow-left"></i>
+            </div>
+            <div class="page-title">My Cart (3)</div>
+            <div class="header-icons">
+                <a href="#" class="icon-btn">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        </header>
+        
+        <div class="cart-items">
+            <div class="cart-item">
+                <div class="cart-image product-1">Realme C55</div>
+                <div class="cart-details">
+                    <div class="cart-title">Realme C55 (Sunshine Gold, 64 GB)</div>
+                    <div class="cart-price">₹9,999</div>
+                    <div class="cart-actions">
+                        <div class="quantity-control">
+                            <button class="quantity-btn minus">-</button>
+                            <div class="quantity-value">1</div>
+                            <button class="quantity-btn plus">+</button>
+                        </div>
+                        <button class="remove-btn">Remove</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cart-item">
+                <div class="cart-image product-2">boAt Airdopes</div>
+                <div class="cart-details">
+                    <div class="cart-title">boAt Airdopes 141 Bluetooth TWS</div>
+                    <div class="cart-price">₹999</div>
+                    <div class="cart-actions">
+                        <div class="quantity-control">
+                            <button class="quantity-btn minus">-</button>
+                            <div class="quantity-value">1</div>
+                            <button class="quantity-btn plus">+</button>
+                        </div>
+                        <button class="remove-btn">Remove</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cart-item">
+                <div class="cart-image product-7">Puma Shoes</div>
+                <div class="cart-details">
+                    <div class="cart-title">Puma Unisex Running Shoes</div>
+                    <div class="cart-price">₹1,299</div>
+                    <div class="cart-actions">
+                        <div class="quantity-control">
+                            <button class="quantity-btn minus">-</button>
+                            <div class="quantity-value">1</div>
+                            <button class="quantity-btn plus">+</button>
+                        </div>
+                        <button class="remove-btn">Remove</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Price (3 items)</span>
+                    <span>₹12,297</span>
+                </div>
+                <div class="summary-row">
+                    <span>Discount</span>
+                    <span style="color: var(--success);">-₹4,897</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery Charges</span>
+                    <span style="color: var(--success);">FREE</span>
+                </div>
+                <div class="summary-row total-row">
+                    <span>Total Amount</span>
+                    <span>₹7,400</span>
+                </div>
+            </div>
+            
+            <button class="checkout-btn">PROCEED TO CHECKOUT</button>
+        </div>
+    </div>
+    
+    <!-- Account Page -->
+    <div id="account-page" class="page">
+        <header>
+            <div class="logo-container">
+                <a href="#" class="logo">Flip<span>kart</span></a>
+            </div>
+            <div class="page-title">My Account</div>
+            <div class="header-icons">
+                <a href="#" class="icon-btn">
+                    <i class="fas fa-cog"></i>
+                </a>
+            </div>
+        </header>
+        
+        <div class="account-page">
+            <div class="profile-card">
+                <div class="profile-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="profile-name">Rahul Sharma</div>
+                <div class="profile-email">rahul.sharma@example.com</div>
+                <button style="background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 4px; font-weight: 500;">Edit Profile</button>
+            </div>
+            
+            <div class="account-options">
+                <div class="option-item">
+                    <div class="option-icon">
+                        <i class="fas fa-box"></i>
+                    </div>
+                    <div class="option-text">My Orders</div>
+                    <div class="option-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="option-item">
+                    <div class="option-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="option-text">Wishlist</div>
+                    <div class="option-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="option-item">
+                    <div class="option-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <div class="option-text">Coupons</div>
+                    <div class="option-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="option-item">
+                    <div class="option-icon">
+                        <i class="fas fa-gift"></i>
+                    </div>
+                    <div class="option-text">Gift Cards</div>
+                    <div class="option-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="option-item">
+                    <div class="option-icon">
+                        <i class="fas fa-question-circle"></i>
+                    </div>
+                    <div class="option-text">Help Center</div>
+                    <div class="option-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+                <div class="option-item">
+                    <div class="option-icon">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </div>
+                    <div class="option-text">Logout</div>
+                    <div class="option-arrow">
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav">
+        <div class="nav-item active" id="nav-home">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </div>
+        <div class="nav-item" id="nav-search">
+            <i class="fas fa-search"></i>
+            <span>Search</span>
+        </div>
+        <div class="nav-item" id="nav-cart">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Cart</span>
+        </div>
+        <div class="nav-item" id="nav-wishlist">
+            <i class="fas fa-heart"></i>
+            <span>Wishlist</span>
+        </div>
+        <div class="nav-item" id="nav-account">
+            <i class="fas fa-user"></i>
+            <span>Account</span>
+        </div>
+    </div>
+
+    <script>
+        // Page navigation
+        function showPage(pageId) {
+            // Hide all pages
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show requested page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Update navigation
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Set active navigation based on page
+            if (pageId === 'home-page') {
+                document.getElementById('nav-home').classList.add('active');
+            } else if (pageId === 'cart-page') {
+                document.getElementById('nav-cart').classList.add('active');
+            } else if (pageId === 'account-page') {
+                document.getElementById('nav-account').classList.add('active');
+            } else if (pageId === 'product-page') {
+                document.getElementById('nav-home').classList.add('active');
+            } else if (pageId.includes('-page') && pageId !== 'home-page' && pageId !== 'cart-page' && pageId !== 'account-page' && pageId !== 'product-page') {
+                document.getElementById('nav-home').classList.add('active');
+            }
+        }
+        
+        // Navigation events
+        document.getElementById('nav-home').addEventListener('click', () => showPage('home-page'));
+        document.getElementById('nav-search').addEventListener('click', () => showPage('home-page'));
+        document.getElementById('nav-cart').addEventListener('click', () => showPage('cart-page'));
+        document.getElementById('nav-wishlist').addEventListener('click', () => showPage('account-page'));
+        document.getElementById('nav-account').addEventListener('click', () => showPage('account-page'));
+        
+        // Header navigation
+        document.getElementById('cart-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            showPage('cart-page');
+        });
+        
+        document.getElementById('notifications-btn').addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Notifications page would open here');
+        });
+        
+        // Category navigation
+        document.querySelectorAll('.category-item').forEach(item => {
+            const category = item.getAttribute('data-category');
+            if (category && category !== 'more') {
+                item.addEventListener('click', () => {
+                    showPage(`${category}-page`);
+                });
+            }
+        });
+        
+        // More category (just show home for now)
+        document.getElementById('more-category').addEventListener('click', () => {
+            showPage('home-page');
+        });
+        
+        // Back buttons
+        document.getElementById('product-back').addEventListener('click', () => {
+            showPage('home-page');
+        });
+        
+        document.getElementById('cart-back').addEventListener('click', () => {
+            showPage('home-page');
+        });
+        
+        // Category back buttons
+        document.getElementById('mobiles-back').addEventListener('click', () => {
+            showPage('home-page');
+        });
+        
+        document.getElementById('fashion-back').addEventListener('click', () => {
+            showPage('home-page');
+        });
+        
+        // Product card clicks
+        document.querySelectorAll('.product-card').forEach(card => {
+            card.addEventListener('click', () => {
+                const productId = card.getAttribute('data-product');
+                // In a real app, we would load product details based on ID
+                // For demo, we'll just show the product page
+                showPage('product-page');
+                
+                // Update product details based on ID
+                const productDetails = {
+                    '1': {
+                        title: 'Realme C55 (Sunshine Gold, 64 GB)',
+                        price: '₹9,999',
+                        originalPrice: '₹14,999',
+                        discount: '33% off',
+                        mainImage: 'product-1'
+                    },
+                    '2': {
+                        title: 'boAt Airdopes 141 Bluetooth TWS',
+                        price: '₹999',
+                        originalPrice: '₹2,990',
+                        discount: '67% off',
+                        mainImage: 'product-2'
+                    },
+                    '3': {
+                        title: 'OnePlus Nord CE 3 Lite 5G',
+                        price: '₹19,999',
+                        originalPrice: '₹23,999',
+                        discount: '17% off',
+                        mainImage: 'product-3'
+                    },
+                    '4': {
+                        title: 'Samsung Galaxy M14 5G (ICY Silver)',
+                        price: '₹10,499',
+                        originalPrice: '₹15,990',
+                        discount: '34% off',
+                        mainImage: 'product-4'
+                    },
+                    '5': {
+                        title: 'Apple iPhone 14 (128 GB) - Blue',
+                        price: '₹65,999',
+                        originalPrice: '₹79,900',
+                        discount: '17% off',
+                        mainImage: 'product-5'
+                    },
+                    '6': {
+                        title: 'Apple MacBook Air M2 Chip (2023)',
+                        price: '₹89,990',
+                        originalPrice: '₹1,04,900',
+                        discount: '14% off',
+                        mainImage: 'product-6'
+                    },
+                    '7': {
+                        title: 'Puma Unisex Running Shoes',
+                        price: '₹1,299',
+                        originalPrice: '₹2,499',
+                        discount: '48% off',
+                        mainImage: 'product-7'
+                    },
+                    '8': {
+                        title: 'Noise ColorFit Pro 4 Smartwatch',
+                        price: '₹1,799',
+                        originalPrice: '₹4,499',
+                        discount: '60% off',
+                        mainImage: 'product-8'
+                    },
+                    '9': {
+                        title: 'Redmi Note 12 (Midnight Black)',
+                        price: '₹14,999',
+                        originalPrice: '₹17,999',
+                        discount: '17% off',
+                        mainImage: 'product-9'
+                    },
+                    '10': {
+                        title: 'Levi\'s Men\'s Slim Fit Jeans',
+                        price: '₹1,899',
+                        originalPrice: '₹2,599',
+                        discount: '27% off',
+                        mainImage: 'product-10'
+                    },
+                    '11': {
+                        title: 'Adidas Men\'s Solid T-Shirt',
+                        price: '₹599',
+                        originalPrice: '₹999',
+                        discount: '40% off',
+                        mainImage: 'product-11'
+                    },
+                    '12': {
+                        title: 'Zara Women\'s Floral Dress',
+                        price: '₹2,499',
+                        originalPrice: '₹3,499',
+                        discount: '29% off',
+                        mainImage: 'product-12'
+                    }
+                };
+                
+                const details = productDetails[productId];
+                document.getElementById('product-title').textContent = details.title;
+                document.getElementById('product-price').textContent = details.price;
+                document.querySelector('.product-original').textContent = details.originalPrice;
+                document.querySelector('.product-discount').textContent = details.discount;
+                document.getElementById('product-main-image').className = 'main-image ' + details.mainImage;
+                document.getElementById('product-main-image').textContent = details.title.split(' ')[0];
+            });
+        });
+        
+        // Add to cart button
+        document.getElementById('add-to-cart-btn').addEventListener('click', () => {
+            alert('Added to cart!');
+            // Update cart count
+            const cartCount = document.querySelector('.cart-count');
+            cartCount.textContent = parseInt(cartCount.textContent) + 1;
+        });
+        
+        // Quantity controls
+        document.querySelectorAll('.quantity-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const valueEl = this.parentElement.querySelector('.quantity-value');
+                let value = parseInt(valueEl.textContent);
+                
+                if (this.classList.contains('plus')) {
+                    value++;
+                } else if (this.classList.contains('minus') && value > 1) {
+                    value--;
+                }
+                
+                valueEl.textContent = value;
+            });
+        });
+        
+        // Remove buttons
+        document.querySelectorAll('.remove-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.closest('.cart-item').remove();
+                // Update cart count
+                const cartCount = document.querySelector('.cart-count');
+                const currentCount = parseInt(cartCount.textContent);
+                cartCount.textContent = Math.max(0, currentCount - 1);
+                
+                // If cart is empty, show message
+                if (document.querySelectorAll('.cart-item').length === 0) {
+                    document.querySelector('.cart-items').innerHTML = '<div style="text-align: center; padding: 40px; color: var(--text-light);">Your cart is empty</div>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
